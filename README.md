@@ -1,5 +1,13 @@
-# QueryAndDataSetSystem
+# PHOCAS SOFTWARE JAVA TEST QueryAndDataSetSystem
+
+JOSHUA TELEA
+joshuavtelea@gmail.com
+0225695585
+
+
+
 WELCOME TO MY QUERY AND DATA SET SYSTEM.
+
 This is made in responce to a coding evaluation/test 
 
 !!IMPORTANT NOTE_

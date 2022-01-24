@@ -18,6 +18,9 @@ __________
 {"id":"9","firstName":"Kirbie","lastName":"Rasheida","age":"86","location":"NA"}
 {"id":"10","firstName":"Darell","lastName":"Harry","age":"59","location":"Russia"}
 __________
+Example/Proof Tests written pass.
+
+![image](https://user-images.githubusercontent.com/63938964/150718229-850faaf3-648a-4cf2-99f6-90dc606de967.png)
 
 Time Taken: Aproximatley 5 Hrs 
 Shared on :23/01/22

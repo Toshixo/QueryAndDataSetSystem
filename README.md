@@ -2,6 +2,23 @@
 WELCOME TO MY QUERY AND DATA SET SYSTEM.
 This is made in responce to a coding evaluation/test 
 
+!!IMPORTANT NOTE_
+Please note not to delete or overwrite file "t.ndjson" otherwise tests will break didnt have enough spare time to fix the reliance on this.
+_CONTENTS_ 
+"t.ndjson"
+__________
+{"id":"1","firstName":"Donika","lastName":"Kylah","age":"57","location":"NA"}
+{"id":"2","firstName":"Jenson","lastName":"Shelaine","age":"87","location":"NA"}
+{"id":"3","firstName":"Marisella","lastName":"Lesleyanne","age":"70","location":"NA"}
+{"id":"4","firstName":"Anastassia","lastName":"Corrin","age":"46","location":"Switzerland"}
+{"id":"5","firstName":"Smauel","lastName":"Devika","age":"46","location":"Switzerland"}
+{"id":"6","firstName":"Micole","lastName":"Moneika","age":"35","location":"Australia"}
+{"id":"7","firstName":"Tarry","lastName":"Deke","age":"10","location":"Switzerland"}
+{"id":"8","firstName":"Lakecia","lastName":"Mitzy","age":"8","location":"Switzerland"}
+{"id":"9","firstName":"Kirbie","lastName":"Rasheida","age":"86","location":"NA"}
+{"id":"10","firstName":"Darell","lastName":"Harry","age":"59","location":"Russia"}
+__________
+
 Time Taken: Aproximatley 5 Hrs 
 Shared on :23/01/22
 

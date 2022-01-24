@@ -145,4 +145,16 @@ private JSONArray getPeopleGroupedByCountryAndAge(String locationCheck, int lowN
 •	One of your own creation.
   
 !INFO _ added functionality of searching by the first letter of peoples names in a selected country.
-  
+  public JSONArray getPeopleBasedOnFirstLetter(char nameCheck) {
+		JSONArray PeopleFoundByName  = new JSONArray();
+		for(int i = 0; i<personArray.length() ; i++) {
+			String name = personArray.getJSONObject(i).getString("firstName").toString();
+			char nameChar = name.charAt(0);
+		  if(nameChar == nameCheck ) {
+			  PeopleFoundByName.put(personArray.getJSONObject(i));
+			  
+		  }
+		}
+	  
+	return PeopleFoundByName;
+	}

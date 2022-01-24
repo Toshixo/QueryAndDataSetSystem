@@ -25,6 +25,9 @@ Example/Proof Tests written pass.
 Time Taken: Aproximatley 5 Hrs 
 Shared on :23/01/22
 
+Time Taken: Aproximatley 4 Hrs 
+Shared on :24/01/22
+
 Requirements: 
 
 1.	Generate data

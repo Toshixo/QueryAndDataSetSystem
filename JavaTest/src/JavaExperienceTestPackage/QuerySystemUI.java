@@ -25,24 +25,24 @@ import org.json.JSONObject;
 //Query System UI & Interaction
 public class QuerySystemUI {
 	// Consistent UI Line breaks
-	private String brk = "\n______________________________________________________\n\n";
+	public String brk = "\n______________________________________________________\n\n";
 	
 	// @List of names
-	private List<String> RandomNames = new ArrayList<String>(); 
+	public List<String> RandomNames = new ArrayList<String>(); 
 	
 	// @List of people
-	private List<String> RandomPeople = new ArrayList<String>(); 
+	public List<String> RandomPeople = new ArrayList<String>(); 
 	
-	JSONArray personArray  = new JSONArray();
+	public JSONArray personArray  = new JSONArray();
 	
 	// Default location for random names file
 	public String location = new File("Names.txt").getAbsolutePath();
 	
 	// Holds list of data set titles
-	private List<String> ValueList = new ArrayList<String>(); 
+	public List<String> ValueList = new ArrayList<String>(); 
 	
 	// Initialization of total amount of titles
-	private int valueCount = ValueList.size();
+	public int valueCount = ValueList.size();
 	
 	// ! GET METHODS!
 	
@@ -54,7 +54,7 @@ public class QuerySystemUI {
 		return RandomNames;
 	}
 	// @return the users input 
-	private String getUserInput() {
+	public String getUserInput() {
 		@SuppressWarnings("resource")
 		Scanner scanner = new Scanner(System.in);
 		String userInput = scanner.nextLine();
@@ -62,7 +62,7 @@ public class QuerySystemUI {
 		
 	}
 	// @returns random names from file into 
-	private void setRandomListFromTextFile(String location) {
+	public void setRandomListFromTextFile(String location) {
 		// In it scanner
 		Scanner s = null;
 		try {
@@ -71,7 +71,7 @@ public class QuerySystemUI {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			writeText(" File Not Found Returning to Dataset Generator");
-			systemFunctionSelection();
+			systemFunctionSelection(null);
 		}
 		// Checks for has next line + adds to randomNames array || closes scanner
 		 while (s.hasNext()){
@@ -116,13 +116,16 @@ public class QuerySystemUI {
 			
 			
 		}
+		if(amountToGenerate != 223836) {
 		writeText("\n Enter the name you want to call you NDJSON file.\n no need to include the extension.");
-		createNDJSON(getUserInput());
+		
+			createNDJSON(getUserInput());
+		}
 		
 		
 	}
 	// Creation of the local NDJSON File 
-	private void createNDJSON(String fileName) {
+	public void createNDJSON(String fileName) {
 		String location = new File(fileName+".ndjson" ).getAbsolutePath();
 		
 		
@@ -133,10 +136,14 @@ public class QuerySystemUI {
 	      if (myObj.createNewFile()) {
 	        writeText(" File created: " + myObj.getName());
 	        writeText(" Writing to new File");
-	        writeToCreatedNDJSON(fileName);
+	        if(writeToCreatedNDJSON(fileName)) {
+	        	viewDataScreen(getUserInput());
+	        }
 	      } else {
 	        writeText("\n File already exists. OverWriting");
-	        writeToCreatedNDJSON(fileName);
+	        if(writeToCreatedNDJSON(fileName)) {
+	        	viewDataScreen(getUserInput());
+	        }
 	      }
 	    } catch (IOException e) {
 	      writeText(" An error occurred.");
@@ -145,7 +152,7 @@ public class QuerySystemUI {
   }
 	
 	// returns location based on input number and a switch
-	private String generateRandomLocation(int d) {
+	public String generateRandomLocation(int d) {
 		
 		switch(d) { 
 		case 1:
@@ -161,13 +168,13 @@ public class QuerySystemUI {
 		}
 	}
 	//write to local file 
-	private void writeToCreatedNDJSON(String fileName) {
+	public boolean writeToCreatedNDJSON(String fileName) throws IOException {
 		String location = new File(fileName+".ndjson").getAbsolutePath();
 		
 		int amountWritten = 0;
 		int dataReaderLength = 0;
 		
-		 try {
+		
 		      FileWriter myWriter = new FileWriter(location);
 		      // NDJSON manual convert of list to NDJSON file write
 		   
@@ -186,71 +193,62 @@ public class QuerySystemUI {
 		    	  myWriter.write("}\n");
 		    	  dataReaderLength = dataReaderLength+valueCount;
 		    	  amountWritten = amountWritten + 1;
-		    	 
 		      }
-		     
+		    
 		      // close file writer to avoid possible memory leak
 		      myWriter.close();
 		    
 		      writeText(" Successfully wrote to the file.");
-		      viewDataScreen();
-		    } catch (IOException e) {
-		      writeText(" An error occurred.");
-		      e.printStackTrace();
-		    }
+		      writeText(" Press Enter to continue....");
+		      return true;
+		      
+		    
 	}
 	
 	
-	private void writeText(String text) {
+	public String writeText(String text) {
 		System.out.println(text);
+		return text;
 	}
 	
-	// System UI entry public function 
-	public void startUI() {
-		createWelcomeScreen();
-	}
 	
-	// Welcome Screen
-	private void createWelcomeScreen() {
-		writeText(brk + "       Welcome" + brk +" type any key to start ");
-		String userInputValue = this.getUserInput();
-		if (userInputValue != null) {
-			systemFunctionSelection();
-		}else {
-			writeText(" Exiting Application...");
-			System.exit(0);
-		}
+	
+
+	public void viewDataScreen(String input) {
 		
-	}
-	private void viewDataScreen() {
 		writeText(brk + "Would you like to view created data?\n Y / N " + brk);
-		switch(getUserInput().toLowerCase()) {
-		case "y":
-		case "yes":
-		case "yup": 
-		selectFileScreen();
-			break;
-		case "n":
-		case "no":
-			break;
-		default:
-			writeText("You can not use this letter or number \n ...");
-			viewDataScreen();
+	      
+	      String input1 = getUserInput();
+	      switch(input1) {
+			case "y":
+			case "yes":
+			case "yup": 
+			selectFileScreen(null);
+				break;
+			case "n":
+			case "no":
+				break;
+			default:
+				writeText("You can not use this letter or number \n ...");
+				viewDataScreen(getUserInput());
+	      }
 				
 		}
-	}
-	private void selectFileScreen() {
+	
+	public void selectFileScreen(String fileSelected) {
 		// TODO Auto-generated method stub
 		String fileName = null;
 		List<String> results = getAllDirectoryFiles();
 		int i;
-		String fileSelected;
+		
 		for(i = 0; i < results.size(); i++) {
 			writeText(i + " > " + results.get(i).toString());
 			
 		}
 		writeText("Please enter the number of the file you would like to use");
-		fileSelected = getUserInput();
+		if(fileSelected == null) {
+			fileSelected = getUserInput();
+		}
 		fileName = results.get(Integer.parseInt(fileSelected)).toString();
 		parseJSONFromFile(fileName);
 		
@@ -268,7 +266,7 @@ public class QuerySystemUI {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				writeText(" \nFile Not Found Returning to Dataset Generator\n ...");
-				systemFunctionSelection();
+				systemFunctionSelection(null);
 			}
 			// Checks for has next line + adds to randomNames array || closes scanner
 			
@@ -298,26 +296,35 @@ public class QuerySystemUI {
 			count+=1;
 		}
 		writeText(brk + "Total= " + count + brk);
-		menuScreen();
+		
+		if(file.toString() != "t.ndjson" ) {
+			menuScreen(null, null);
+		}
+		
 	
 	}
 	
-	private void menuScreen() {
+	public String menuScreen(String input, String furtherString ) {
 		// TODO Auto-generated method stub
 		writeText("What would you like to do?");
 		writeText("1> Query Selected Data");
 		writeText("2> Change Selected Data");
 		writeText("3> Generate New Data");
 		writeText("4> Exit Applicaiton ");
-		switch(getUserInput()) {
+		if (input == null) {
+			input = getUserInput();
+		}
+		
+		switch(input) {
 		case "1": 
-			queryScreen();
-			break;
+			queryScreen(furtherString,0,0);
+			return "query screen";
+			
 		case "2": 
-			selectFileScreen();
+			selectFileScreen(furtherString);
 			break;
 		case "3": 
-			systemFunctionSelection();
+			systemFunctionSelection(null);
 			break;
 		case "4": 
 			System.exit(0);;
@@ -325,37 +332,50 @@ public class QuerySystemUI {
 			
 		default:
 			writeText("Sorry you can't enter that key! Please try again...");
-			menuScreen();
+			menuScreen(null,null);
 		}
+		return "not correct";
 		
 	}
-	private void queryScreen() {
+	public String queryScreen(String input, Integer lowNum, Integer highNum) {
+		
+		
 		writeText("\nWhat would you like to do?");
 		writeText("1> Find oldest person in dataset");
 		writeText("2> Group by location");
 		writeText("3> Group by location and select and age range");
-		switch(getUserInput()) {
+		writeText("4> Search person by first letter of their name");
+		if(input==null) {
+			input = getUserInput();
+		}
+		
+		int i = 0;
+		switch(input) {
+		
 		case"1":
-			for(int i = 0; i < getOldestPerson().length(); i++) {
-				writeText("ID: " +getOldestPerson().getJSONObject(i).getString("id") 
+			for(i = 0; i < getOldestPerson(personArray).length(); i++) {
+				writeText("ID: " +getOldestPerson(personArray).getJSONObject(i).getString("id") 
 						+ "     FName: "
-						+ getOldestPerson().getJSONObject(i).getString("firstName") 
+						+ getOldestPerson(personArray).getJSONObject(i).getString("firstName") 
 						+ "     LName: "
-						+ getOldestPerson().getJSONObject(i).getString("lastName")
+						+ getOldestPerson(personArray).getJSONObject(i).getString("lastName")
 						+ "     Age: "
-						+ getOldestPerson().getJSONObject(i).getString("age")+ "\t"
+						+ getOldestPerson(personArray).getJSONObject(i).getString("age")+ "\t"
 						+ "     Location: "
-						+ getOldestPerson().getJSONObject(i).getString("location")
+						+ getOldestPerson(personArray).getJSONObject(i).getString("location")
 						
 						);
-				writeText(brk + getOldestPerson().length());
+				writeText(brk + "Total: " + getOldestPerson(personArray).length() + brk);
+				
+				return getOldestPerson(personArray).getJSONObject(i).getString("age")+getOldestPerson(personArray).length();
+			
 			}
-			break;
+			
 		case"2":
 			String localLocation = "";
 			for(Locations loco : Locations.values()) {
 				localLocation = loco.toString();
-				for(int i = 0; i < getPeopleGroupedByCountry(loco.toString()).length(); i++) {
+				for( i = 0; i < getPeopleGroupedByCountry(loco.toString()).length(); i++) {
 				writeText("ID: " +getPeopleGroupedByCountry(loco.toString()).getJSONObject(i).getString("id") 
 						+ "     FName: "
 						+ getPeopleGroupedByCountry(loco.toString()).getJSONObject(i).getString("firstName") 
@@ -371,45 +391,80 @@ public class QuerySystemUI {
 				writeText(brk + localLocation +" | TOTAL: " + getPeopleGroupedByCountry(loco.toString()).length()+ "\n");
 				
 				
+				
+			}
+			if(i != 0) {
+				return getPeopleGroupedByCountry(localLocation).getJSONObject(0).getString("location");
 			}
 			break;
 		case"3":
-			Integer lowNum = 0;
-			Integer highNum = 0;
-			writeText("What age group do you want to query?");
-			writeText("Enter LOWER number...");
-			lowNum = Integer.parseInt(getUserInput());
-			writeText("Enter Higher number");
-			highNum = Integer.parseInt(getUserInput());
+			
+			
+			if(lowNum ==0) {
+				writeText("What age group do you want to query?");
+				writeText("Enter LOWER number...");
+				lowNum = Integer.parseInt(getUserInput());
+			}
+			if(highNum == 0) {
+				writeText("Enter Higher number");
+				highNum = Integer.parseInt(getUserInput());
+			}
 			
 			String localLocation1 = "";
 			for(Locations loco : Locations.values()) {
 				localLocation1 = loco.toString();
-				for(int i = 0; i < getPeopleGroupedByCountryAndAge(loco.toString(),lowNum, highNum).length(); i++) {
-				writeText("ID: " +getPeopleGroupedByCountryAndAge(loco.toString(),lowNum, highNum).getJSONObject(i).getString("id") 
+				JSONArray group = getPeopleGroupedByCountryAndAge(loco.toString(),lowNum, highNum);
+				
+				for(i = 0; i < group.length(); i++) {
+				writeText("ID: " +group.getJSONObject(i).getString("id") 
 						+ "     FName: "
-						+ getPeopleGroupedByCountryAndAge(loco.toString(),lowNum, highNum).getJSONObject(i).getString("firstName") 
+						+ group.getJSONObject(i).getString("firstName") 
 						+ "     LName: "
-						+ getPeopleGroupedByCountryAndAge(loco.toString(),lowNum, highNum).getJSONObject(i).getString("lastName")
+						+ group.getJSONObject(i).getString("lastName")
 						+ "     Age: "
-						+ getPeopleGroupedByCountryAndAge(loco.toString(),lowNum, highNum).getJSONObject(i).getString("age")+ "\t"
+						+ group.getJSONObject(i).getString("age")+ "\t"
 						+ "     Location: "
-						+ getPeopleGroupedByCountryAndAge(loco.toString(),lowNum, highNum).getJSONObject(i).getString("location")
+						+ group.getJSONObject(i).getString("location")
 						
 						);
 				}
-				writeText(brk + localLocation1 +" | TOTAL: " + getPeopleGroupedByCountryAndAge(loco.toString(),lowNum, highNum).length()+ "\n");
-				
+				writeText(brk + localLocation1 +" | TOTAL: " + group.length()+ "\n");
+				if(i != 0) {
+					return  group.getJSONObject(0).getString("location") + group.getJSONObject(0).getString("age");
+				}
 				
 			}
 			break;
 			
+		case "4":
+			String word = getUserInput();
+			char letter = word.charAt(0);
+			for(i = 0; i < getPeopleBasedOnFirstLetter(letter).length(); i++) {
+				writeText("ID: " + getPeopleBasedOnFirstLetter(letter).getJSONObject(i).getString("id") 
+						+ "     FName: "
+						+ getPeopleBasedOnFirstLetter(letter).getJSONObject(i).getString("firstName") 
+						+ "     LName: "
+						+ getPeopleBasedOnFirstLetter(letter).getJSONObject(i).getString("lastName")
+						+ "     Age: "
+						+ getPeopleBasedOnFirstLetter(letter).getJSONObject(i).getString("age")+ "\t"
+						+ "     Location: "
+						+ getPeopleBasedOnFirstLetter(letter).getJSONObject(i).getString("location")
+						
+						);
+				
 			
+			}
+			writeText(brk + "Total= " + getPeopleBasedOnFirstLetter(letter).length() + brk);
 			
+			return getPeopleBasedOnFirstLetter(letter).length() + "";
 		}
+		
+		return "***";
+		
+		
 	}
 	
-	private JSONArray getOldestPerson() {
+	public JSONArray getOldestPerson(JSONArray personArray) {
 		
 		Integer maxAge = 0;
 		JSONArray olderPerson  = new JSONArray();
@@ -422,7 +477,6 @@ public class QuerySystemUI {
 			}
 			else if(age > maxAge) {
 				maxAge = age;
-//				writeText(age + " | "+ maxAge);
 				olderPerson.clear();
 				olderPerson.put(personArray.getJSONObject(i));
 			}
@@ -430,7 +484,7 @@ public class QuerySystemUI {
 		return olderPerson;
 		
 	}
-	private JSONArray getPeopleGroupedByCountry(String locationCheck) {
+	public JSONArray getPeopleGroupedByCountry(String locationCheck) {
 		JSONArray PeopleOrganisedByLocation  = new JSONArray();
 		
 			
@@ -446,7 +500,7 @@ public class QuerySystemUI {
 		return PeopleOrganisedByLocation;
 	}
 	
-	private JSONArray getPeopleGroupedByCountryAndAge(String locationCheck, int lowNum,int highNum) {
+	public JSONArray getPeopleGroupedByCountryAndAge(String locationCheck, int lowNum,int highNum) {
 		JSONArray PeopleOrganisedByLocationAndAge  = new JSONArray();
 		
 			
@@ -460,6 +514,19 @@ public class QuerySystemUI {
 			}
 		  
 		return PeopleOrganisedByLocationAndAge;
+	}
+	public JSONArray getPeopleBasedOnFirstLetter(char nameCheck) {
+		JSONArray PeopleFoundByName  = new JSONArray();
+		for(int i = 0; i<personArray.length() ; i++) {
+			String name = personArray.getJSONObject(i).getString("firstName").toString();
+			char nameChar = name.charAt(0);
+		  if(nameChar == nameCheck ) {
+			  PeopleFoundByName.put(personArray.getJSONObject(i));
+			  
+		  }
+		}
+	  
+	return PeopleFoundByName;
 	}
 	public List<String> getAllDirectoryFiles() {
 		List<String> results = new ArrayList<String>();
@@ -477,22 +544,21 @@ public class QuerySystemUI {
 }
 
 	// System @function selector Data Generator / Data Query(only unlocked after data generation or local file is used) 
-	private void systemFunctionSelection() {
+	public void systemFunctionSelection(String input) {
 		writeText(brk + " Welcome to the Data generator\n");
 		writeText(" How many people would you like to generate?" + brk);
+		if(input ==null) {
+			input = getUserInput();
+		}
+	
 		
-		Integer userInputAsInt = Integer.parseInt(getUserInput());
-		generateData(userInputAsInt);
-		
-	}
-	private void generateData(int amountToGenerate) {
+		Integer amountToGenerate = Integer.parseInt(input);
 		writeText(brk + " You chose to generate " + amountToGenerate + " People\n ... \n");
 		writeText(" Please wait while dataset is generated\n ...");
 		setRandomPeople(amountToGenerate);
-	
-	
-
+		
 	}
+	
 
 	
 
